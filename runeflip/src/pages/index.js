@@ -1,6 +1,7 @@
-import UpperPanel from '@/components/UpperPanel';
-import LowerPanel from '@/components/LowerPanel';
 
+
+// New (working)
+import UpperPanel from '../components/UpperPanel';
 export default function RuneFlip() {
   return (
     <div className="flex flex-col h-screen">
