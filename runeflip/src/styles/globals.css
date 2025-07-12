@@ -1,8 +1,11 @@
-// Remove font imports if not installed
-import '../styles/globals.css';
+/* Minimal working globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+body {
+  background: #0C0D12;
+  color: white;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
-
-export default MyApp;
