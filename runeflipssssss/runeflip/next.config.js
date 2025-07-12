@@ -1,4 +1,6 @@
 module.exports = {
-  basePath: '',
-  trailingSlash: true,
-}
+  output: 'standalone', // Critical for Vercel
+  images: {
+    unoptimized: true, // Disables Image Optimization API errors
+  },
+};
