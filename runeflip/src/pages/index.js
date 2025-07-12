@@ -1,386 +1,356 @@
 // src/pages/index.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function RuneFlip() {
   const [activeTab, setActiveTab] = useState('create');
+  const [isScrolling, setIsScrolling] = useState(false);
 
-  // Design system
+  // Track scroll for dynamic effects
+  useEffect(() => {
+    const handleScroll = () => setIsScrolling(true);
+    const timer = setTimeout(() => setIsScrolling(false), 300);
+    return () => clearTimeout(timer);
+  }, [isScrolling]);
+
+  // Design Tokens
   const design = {
     colors: {
-      background: '#0C0D12',
+      bg: '#0C0D12',
       primary: '#3FE0D0',
       secondary: '#9F6CFF',
       gold: '#FFD66B',
-      panelDark: '#1A1C2E',
-      panelDarker: '#141625'
+      panel: 'rgba(26, 28, 46, 0.85)',
+      panelBorder: 'rgba(63, 224, 208, 0.15)'
     },
-    radii: {
-      panel: '24px', // Larger radius for modern look
-      element: '12px'
-    },
-    shadows: {
-      panel: '0 8px 32px rgba(0, 0, 0, 0.3)',
-      inset: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+    effects: {
+      glass: `
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(26, 28, 46, 0.85);
+        border: 1px solid rgba(63, 224, 208, 0.15);
+      `,
+      shadow: '0 12px 40px rgba(0, 0, 0, 0.25)'
     }
   };
 
-  const UpperPanel = () => (
+  // Perfect Circle Coin Component
+  const RuneCoin = () => (
     <div style={{
-      height: '60vh',
-      backgroundColor: design.colors.background,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      paddingTop: '40px',
-      position: 'relative',
-      zIndex: 2,
-      borderBottomLeftRadius: design.radii.panel,
-      borderBottomRightRadius: design.radii.panel,
-      boxShadow: design.shadows.panel
+      width: '280px',
+      height: '280px',
+      margin: '0 auto 32px',
+      perspective: '1000px'
     }}>
-      {/* Floating coin container */}
       <div style={{
-        width: '280px',
-        height: '280px',
-        marginBottom: '32px',
+        width: '100%',
+        height: '100%',
         position: 'relative',
-        filter: 'drop-shadow(0 10px 20px rgba(63, 224, 208, 0.2))'
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.8s',
+        transform: activeTab === 'heads' ? 'rotateY(0deg)' : 'rotateY(180deg)'
       }}>
-        {/* Sleek 3D coin */}
+        {/* Front Side */}
         <div style={{
           position: 'absolute',
-          inset: 0,
+          width: '100%',
+          height: '100%',
           borderRadius: '50%',
-          border: `4px solid ${design.colors.primary}`,
-          background: `linear-gradient(145deg, ${design.colors.panelDark} 0%, ${design.colors.panelDarker} 100%)`,
+          background: 'radial-gradient(circle at 30% 30%, #2D2F42, #1A1C2E)',
+          border: '3px solid #3FE0D0',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          transformStyle: 'preserve-3d',
+          backfaceVisibility: 'hidden',
           boxShadow: `
-            0 0 15px ${design.colors.primary}80,
-            ${design.shadows.inset}
+            0 0 25px rgba(63, 224, 208, 0.3),
+            inset 0 0 15px rgba(63, 224, 208, 0.2)
           `
         }}>
           <span style={{
             fontSize: '72px',
-            color: design.colors.gold,
-            fontFamily: '"Rajdhani", sans-serif',
-            textShadow: '0 0 10px rgba(255, 214, 107, 0.5)'
-          }}>
-            {activeTab === 'heads' ? 'ᚠ' : 'ᚢ'}
-          </span>
+            color: '#FFD66B',
+            textShadow: '0 0 15px rgba(255, 214, 107, 0.7)',
+            fontFamily: '"Rajdhani", sans-serif'
+          }}>ᚠ</span>
         </div>
-      </div>
-
-      {/* Modern tab selector */}
-      <div style={{
-        display: 'flex',
-        marginBottom: '24px',
-        background: design.colors.panelDarker,
-        borderRadius: design.radii.element,
-        padding: '4px',
-        boxShadow: design.shadows.inset
-      }}>
-        {['create', 'join', 'multi'].map((tab) => (
-          <button
-            key={tab}
-            style={{
-              padding: '8px 16px',
-              borderRadius: '8px',
-              background: activeTab === tab ? 
-                `linear-gradient(90deg, ${design.colors.primary}, #2ECFB9)` : 
-                'transparent',
-              color: activeTab === tab ? '#000' : design.colors.secondary,
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: 600,
-              textTransform: 'capitalize',
-              transition: 'all 0.2s ease',
-              boxShadow: activeTab === tab ? 
-                '0 2px 8px rgba(63, 224, 208, 0.3)' : 'none'
-            }}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab === 'multi' ? 'Multi-Game' : tab + ' Game'}
-          </button>
-        ))}
-      </div>
-
-      {/* Premium stake input */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        marginBottom: '32px',
-        filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25))'
-      }}>
-        <div style={{ position: 'relative' }}>
-          <input
-            type="number"
-            placeholder="0.001"
-            style={{
-              background: design.colors.panelDarker,
-              color: '#FFF',
-              padding: '14px 16px',
-              borderTopLeftRadius: design.radii.element,
-              borderBottomLeftRadius: design.radii.element,
-              width: '160px',
-              paddingRight: '40px',
-              border: 'none',
-              outline: 'none',
-              fontSize: '16px',
-              boxShadow: design.shadows.inset
-            }}
-            min="0.001"
-            step="0.001"
-          />
-          <span style={{
-            position: 'absolute',
-            right: '16px',
-            top: '14px',
-            color: design.colors.secondary,
-            fontWeight: 500
-          }}>
-            SOL
-          </span>
-        </div>
-        <button style={{
-          background: `linear-gradient(90deg, ${design.colors.gold}, #F5C85E)`,
-          color: '#000',
-          padding: '14px 24px',
-          borderTopRightRadius: design.radii.element,
-          borderBottomRightRadius: design.radii.element,
-          border: 'none',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          fontSize: '16px',
-          transition: 'all 0.2s ease',
-          boxShadow: '0 2px 8px rgba(255, 214, 107, 0.3)',
-          ':hover': {
-            transform: 'translateY(-1px)'
-          }
+        
+        {/* Back Side */}
+        <div style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle at 70% 30%, #2D2F42, #1A1C2E)',
+          border: '3px solid #9F6CFF',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backfaceVisibility: 'hidden',
+          transform: 'rotateY(180deg)',
+          boxShadow: `
+            0 0 25px rgba(159, 108, 255, 0.3),
+            inset 0 0 15px rgba(159, 108, 255, 0.2)
+          `
         }}>
-          {activeTab === 'join' ? 'Join' : 'Flip'}
-        </button>
+          <span style={{
+            fontSize: '72px',
+            color: '#FFD66B',
+            textShadow: '0 0 15px rgba(255, 214, 107, 0.7)',
+            fontFamily: '"Rajdhani", sans-serif'
+          }}>ᚢ</span>
+        </div>
       </div>
     </div>
   );
 
-  const LowerPanel = () => (
+  // Modern Scrollable Panel
+  const ScrollPanel = ({ children }) => (
     <div style={{
-      height: '40vh',
-      display: 'flex',
-      position: 'relative',
-      zIndex: 1,
-      marginTop: '-20px', // Overlap with upper panel
-      paddingTop: '20px' // Compensate for overlap
+      overflowY: 'auto',
+      scrollbarWidth: 'none', /* Firefox */
+      msOverflowStyle: 'none', /* IE/Edge */
+      '&::-webkit-scrollbar': {
+        display: 'none' /* Chrome/Safari */
+      },
+      paddingRight: '8px',
+      marginRight: '-8px'
     }}>
-      {/* Left Panel - Sleek history */}
-      <div style={{
-        width: '50%',
-        background: design.colors.panelDarker,
-        padding: '24px',
-        overflowY: 'auto',
-        borderTopLeftRadius: design.radii.panel,
-        boxShadow: design.shadows.panel,
-        marginRight: '1px' // Prevents gap between panels
-      }}>
-        {/* Panel header with accent line */}
-        <div style={{
-          borderLeft: `3px solid ${design.colors.primary}`,
-          paddingLeft: '12px',
-          marginBottom: '24px'
-        }}>
-          <h3 style={{
-            color: design.colors.gold,
-            fontSize: '18px',
-            fontWeight: 600,
-            letterSpacing: '0.5px'
-          }}>
-            Your Matches
-          </h3>
-        </div>
-        
-        {/* Modern card list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {Array(5).fill().map((_, i) => (
-            <div key={i} style={{
-              background: `linear-gradient(90deg, ${design.colors.panelDark}, ${design.colors.panelDarker})`,
-              borderRadius: '12px',
-              padding: '16px',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-              borderLeft: `3px solid ${i % 2 ? design.colors.primary : '#FF5555'}`
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div>
-                  <p style={{ 
-                    color: design.colors.secondary, 
-                    fontSize: '14px',
-                    marginBottom: '4px'
-                  }}>
-                    #{i+1} • 2 min ago
-                  </p>
-                  <p style={{ 
-                    color: '#FFF', 
-                    fontWeight: 500,
-                    letterSpacing: '0.3px'
-                  }}>
-                    vs. 7y14...W9j3
-                  </p>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <p style={{ 
-                    fontWeight: 'bold',
-                    color: i % 2 ? design.colors.primary : '#FF5555',
-                    fontSize: '16px'
-                  }}>
-                    {i % 2 ? '+0.25 SOL' : '-0.25 SOL'}
-                  </p>
-                  <p style={{ 
-                    color: design.colors.secondary, 
-                    fontSize: '12px',
-                    opacity: 0.8
-                  }}>
-                    Fee: 0.0025 SOL
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Right Panel - Premium open games */}
-      <div style={{
-        width: '50%',
-        background: design.colors.panelDarker,
-        padding: '24px',
-        overflowY: 'auto',
-        borderTopRightRadius: design.radii.panel,
-        boxShadow: design.shadows.panel,
-        position: 'relative'
-      }}>
-        {/* Panel header with flex layout */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '24px',
-          borderLeft: `3px solid ${design.colors.secondary}`,
-          paddingLeft: '12px'
-        }}>
-          <h3 style={{
-            color: design.colors.gold,
-            fontSize: '18px',
-            fontWeight: 600,
-            letterSpacing: '0.5px'
-          }}>
-            Open Games
-          </h3>
-          <button style={{
-            color: design.colors.primary,
-            fontSize: '14px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontWeight: 500,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}>
-            <span>Auto-Join</span>
-            <div style={{
-              width: '12px',
-              height: '12px',
-              borderRadius: '4px',
-              background: design.colors.primary,
-              opacity: 0.7
-            }} />
-          </button>
-        </div>
-
-        {/* Glowing game cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {Array(3).fill().map((_, i) => (
-            <div key={i} style={{
-              background: `linear-gradient(90deg, ${design.colors.panelDark}, ${design.colors.panelDarker})`,
-              borderRadius: '12px',
-              padding: '16px',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-              border: `1px solid ${design.colors.primary}20`
-            }}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: '12px'
-              }}>
-                <span style={{ 
-                  color: design.colors.secondary,
-                  fontSize: '14px'
-                }}>
-                  #{i+1}
-                </span>
-                <span style={{ 
-                  color: design.colors.gold,
-                  fontWeight: 600,
-                  fontSize: '16px'
-                }}>
-                  {0.25 + (i*0.25)} SOL
-                </span>
-              </div>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    background: design.colors.primary,
-                    marginRight: '8px',
-                    boxShadow: `0 0 8px ${design.colors.primary}`
-                  }} />
-                  <span>Waiting for opponent...</span>
-                </div>
-                <button style={{
-                  background: `linear-gradient(90deg, ${design.colors.primary}, #2ECFB9)`,
-                  color: '#000',
-                  padding: '6px 16px',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  ':hover': {
-                    transform: 'translateY(-1px)',
-                    boxShadow: `0 2px 8px ${design.colors.primary}80`
-                  }
-                }}>
-                  Join
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {children}
     </div>
   );
 
   return (
     <div style={{
-      display: 'flex',
-      flexDirection: 'column',
       height: '100vh',
-      backgroundColor: design.colors.background,
+      background: design.colors.bg,
       color: 'white',
       fontFamily: '"Rajdhani", sans-serif',
-      overflow: 'hidden'
+      display: 'flex',
+      flexDirection: 'column'
     }}>
-      <UpperPanel />
-      <LowerPanel />
+      {/* Upper Panel */}
+      <div style={{
+        flex: '0 0 60%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingTop: '40px',
+        position: 'relative',
+        zIndex: 2
+      }}>
+        <RuneCoin />
+        
+        {/* Tab Selector */}
+        <div style={{
+          display: 'flex',
+          background: 'rgba(20, 22, 37, 0.8)',
+          borderRadius: '12px',
+          padding: '6px',
+          marginBottom: '24px',
+          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+        }}>
+          {['create', 'join', 'multi'].map(tab => (
+            <button
+              key={tab}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                background: activeTab === tab ? 
+                  'linear-gradient(90deg, #3FE0D0, #2ECFB9)' : 'transparent',
+                color: activeTab === tab ? '#000' : '#9F6CFF',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 600,
+                transition: 'all 0.2s ease'
+              }}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab === 'multi' ? 'Multi' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
+        </div>
+        
+        {/* Stake Input */}
+        <div style={{ display: 'flex', marginBottom: '32px' }}>
+          <div style={{ position: 'relative' }}>
+            <input
+              type="number"
+              placeholder="0.001"
+              style={{
+                background: 'rgba(30, 31, 43, 0.8)',
+                color: 'white',
+                padding: '14px 16px',
+                borderTopLeftRadius: '12px',
+                borderBottomLeftRadius: '12px',
+                width: '160px',
+                border: 'none',
+                outline: 'none',
+                fontSize: '16px',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+              }}
+              min="0.001"
+              step="0.001"
+            />
+            <span style={{
+              position: 'absolute',
+              right: '16px',
+              top: '14px',
+              color: '#9F6CFF',
+              pointerEvents: 'none'
+            }}>SOL</span>
+          </div>
+          <button style={{
+            background: 'linear-gradient(90deg, #FFD66B, #F5C85E)',
+            color: '#000',
+            padding: '14px 24px',
+            borderTopRightRadius: '12px',
+            borderBottomRightRadius: '12px',
+            border: 'none',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            ':hover': {
+              transform: 'translateY(-1px)'
+            }
+          }}>
+            {activeTab === 'join' ? 'Join' : 'Flip'}
+          </button>
+        </div>
+      </div>
+
+      {/* Lower Panel */}
+      <div style={{
+        flex: '1',
+        display: 'flex',
+        background: design.colors.bg,
+        borderTop: '1px solid rgba(63, 224, 208, 0.1)',
+        position: 'relative'
+      }}>
+        {/* History Panel */}
+        <div style={{
+          width: '50%',
+          padding: '24px',
+          borderRight: '1px solid rgba(63, 224, 208, 0.1)'
+        }}>
+          <h3 style={{
+            color: '#FFD66B',
+            fontSize: '18px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            paddingLeft: '12px',
+            borderLeft: '3px solid #3FE0D0'
+          }}>Match History</h3>
+          <ScrollPanel>
+            {[...Array(5)].map((_, i) => (
+              <div key={i} style={{
+                background: 'rgba(30, 31, 43, 0.6)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                borderLeft: `3px solid ${i % 2 ? '#3FE0D0' : '#FF5555'}`,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div>
+                    <p style={{ color: '#9F6CFF', fontSize: '14px' }}>Game #{i+1}</p>
+                    <p style={{ color: 'white' }}>vs. 7y14...W9j3</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{ 
+                      fontWeight: 'bold', 
+                      color: i % 2 ? '#3FE0D0' : '#FF5555'
+                    }}>
+                      {i % 2 ? '+0.25 SOL' : '-0.25 SOL'}
+                    </p>
+                    <p style={{ color: '#9F6CFF', fontSize: '12px' }}>2 mins ago</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </ScrollPanel>
+        </div>
+
+        {/* Open Games Panel */}
+        <div style={{ width: '50%', padding: '24px' }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between',
+            marginBottom: '16px',
+            alignItems: 'center'
+          }}>
+            <h3 style={{
+              color: '#FFD66B',
+              fontSize: '18px',
+              fontWeight: 600,
+              paddingLeft: '12px',
+              borderLeft: '3px solid #9F6CFF'
+            }}>Open Games</h3>
+            <button style={{
+              background: 'none',
+              border: 'none',
+              color: '#3FE0D0',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>Auto-Join</span>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: '4px',
+                background: '#3FE0D0',
+                opacity: 0.7
+              }} />
+            </button>
+          </div>
+          <ScrollPanel>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} style={{
+                background: 'rgba(30, 31, 43, 0.6)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#9F6CFF' }}>Game #{i+1}</span>
+                  <span style={{ color: '#FFD66B', fontWeight: 600 }}>{0.25 + (i*0.25)} SOL</span>
+                </div>
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '8px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: '#3FE0D0',
+                      marginRight: '8px',
+                      boxShadow: '0 0 8px #3FE0D0'
+                    }} />
+                    <span>Waiting...</span>
+                  </div>
+                  <button style={{
+                    background: 'linear-gradient(90deg, #3FE0D0, #2ECFB9)',
+                    color: '#000',
+                    padding: '6px 16px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    fontWeight: 'bold',
+                    cursor: 'pointer'
+                  }}>
+                    Join
+                  </button>
+                </div>
+              </div>
+            ))}
+          </ScrollPanel>
+        </div>
+      </div>
     </div>
   );
 }
