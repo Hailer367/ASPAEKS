@@ -1,0 +1,78 @@
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Divine Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+
+/* Cosmic Color Variables */
+:root {
+  --background: #0C0D12;       /* Deep space black */
+  --primary: #3FE0D0;          /* Teal accent */
+  --secondary: #9F6CFF;        /* Purple accent */
+  --gold: #FFD66B;             /* Golden highlight */
+  --panel-dark: #1A1C2E;       /* Dark panel bg */
+  --panel-darker: #141625;     /* Darker panel bg */
+}
+
+/* Base Styling */
+body {
+  @apply bg-[var(--background)] text-white min-h-screen;
+  font-family: 'Rajdhani', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[var(--panel-darker)];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[var(--primary)] rounded-full;
+}
+
+/* Custom Utility Classes */
+@layer utilities {
+  .rune-glow {
+    text-shadow: 0 0 8px rgba(63, 224, 208, 0.7);
+  }
+  
+  .gold-glow {
+    text-shadow: 0 0 8px rgba(255, 214, 107, 0.7);
+  }
+  
+  .coin-shadow {
+    box-shadow: 0 0 20px rgba(63, 224, 208, 0.5),
+               0 0 40px rgba(63, 224, 208, 0.3);
+  }
+  
+  .panel-gradient {
+    background: linear-gradient(180deg, 
+                var(--panel-dark) 0%, 
+                var(--panel-darker) 100%);
+  }
+}
+
+/* Animation Keyframes */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@keyframes rune-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Disable number input arrows */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
