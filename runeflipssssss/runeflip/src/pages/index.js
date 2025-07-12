@@ -1,18 +1,8 @@
-import UpperPanel from '../components/UpperPanel';
-import LowerPanel from '../components/LowerPanel';
-
-export default function RuneFlip() {
+export default function Home() {
   return (
-    <div className="h-screen flex flex-col">
-      {/* Upper Half - Interactive Zone (60% height) */}
-      <div className="flex-1" style={{ height: '60vh' }}>
-        <UpperPanel />
-      </div>
-
-      {/* Lower Half - Information Panels (40% height) */}
-      <div className="flex-1" style={{ height: '40vh' }}>
-        <LowerPanel />
-      </div>
+    <div style={{ background: '#0C0D12', height: '100vh', color: 'white' }}>
+      <h1>RuneFlip</h1>
+      <p>Solana Coin Flip Game</p>
     </div>
   );
-}// Main Game UI
+}
