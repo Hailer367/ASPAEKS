@@ -1,2 +1,7 @@
-import UpperPanel from '@/components/UpperPanel';
-import LowerPanel from '@/components/LowerPanel';
+module.exports = {
+  output: 'export',
+  // Add this if using src directory
+  experimental: {
+    appDir: true
+  }
+};
