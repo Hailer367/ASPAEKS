@@ -1,4 +1,4 @@
-// PWA Configurationmodule.exports = {
-  basePath: process.env.NODE_ENV === 'production' ? '' : '',
-  // ... other config
+module.exports = {
+  reactStrictMode: true,
+  output: 'standalone' // For PWA
 }
