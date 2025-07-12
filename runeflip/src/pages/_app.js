@@ -1,4 +1,4 @@
-// Remove font imports if not installed
+// Simple _app.js (no font imports)
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
