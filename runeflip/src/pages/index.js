@@ -1,7 +1,8 @@
 
 
-import UpperPanel from '../components/UpperPanel'
-import LowerPanel from '../components/LowerPanel'
+// USE THIS EXACT IMPORT PATH
+import UpperPanel from '../../components/UpperPanel';
+import LowerPanel from '../../components/LowerPanel';
 export default function RuneFlip() {
   return (
     <div className="flex flex-col h-screen">
