@@ -1,15 +1,18 @@
-export default function Home() {
+import UpperPanel from '../components/UpperPanel';
+import LowerPanel from '../components/LowerPanel';
+
+export default function RuneFlip() {
   return (
-    <div style={{
-      background: '#0C0D12',
-      height: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      color: '#3FE0D0',
-      fontFamily: 'sans-serif'
-    }}>
-      <h1>RuneFlip is Working!</h1>
+    <div className="flex flex-col h-screen">
+      {/* Upper Half (60vh) - Interactive Coin Zone */}
+      <div className="flex-1" style={{ height: '60vh' }}>
+        <UpperPanel />
+      </div>
+      
+      {/* Lower Half (40vh) - Info Panels */}
+      <div className="flex-1" style={{ height: '40vh' }}>
+        <LowerPanel />
+      </div>
     </div>
   );
 }
