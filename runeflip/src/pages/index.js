@@ -1,5 +1,5 @@
-import UpperPanel from '../components/UpperPanel';
-import LowerPanel from '../components/LowerPanel';
+import UpperPanel from '@/components/UpperPanel';
+import LowerPanel from '@/components/LowerPanel';
 
 export default function RuneFlip() {
   return (
