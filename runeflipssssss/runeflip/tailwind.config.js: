@@ -1,0 +1,22 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",  // Scans all React files
+    "./pages/**/*.{js,ts,jsx,tsx}", // Next.js pages
+    "./public/**/*.html"             // PWA support
+  ],
+  theme: {
+    extend: {
+      colors: {
+        background: "#0C0D12",
+        accent: "#3FE0D0",
+        secondary: "#9F6CFF",
+        gold: "#FFD66B"
+      },
+      fontFamily: {
+        'rajdhani': ['Rajdhani', 'sans-serif'] // Mystical font
+      }
+    },
+  },
+  plugins: [],
+}
