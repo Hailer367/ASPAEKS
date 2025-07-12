@@ -34,7 +34,7 @@ export default function Home() {
       <div className="flex flex-col items-center mt-8">
         <h1 className="text-3xl font-bold mb-6">RuneFlip</h1>
         <Coin isFlipping={isFlipping} result={result} />
-        
+
         <div className="mt-6 w-full max-w-md">
           <div className="flex justify-around mb-4">
             <button
@@ -96,4 +96,4 @@ export default function Home() {
       </div>
     </div>
   );
-}// Main Game Page
+}
