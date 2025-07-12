@@ -1,11 +1,26 @@
-/* Minimal working globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: #0C0D12;
-  color: white;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+@layer base {
+  :root {
+    --background: #0C0D12;
+    --primary: #3FE0D0;
+    --secondary: #9F6CFF;
+    --gold: #FFD66B;
+  }
+  body {
+    @apply bg-[var(--background)] text-white min-h-screen;
+    font-family: 'Rajdhani', sans-serif;
+  }
+  /* Modern scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-[#1A1C2E];
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#3FE0D0] rounded-full;
+  }
 }
