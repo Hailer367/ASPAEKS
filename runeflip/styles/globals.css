@@ -1,78 +1,82 @@
-/* src/styles/globals.css */
+/* 1. Base Styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Divine Font Import */
+/* 2. Font Import */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
 
-/* Cosmic Color Variables */
-:root {
-  --background: #0C0D12;       /* Deep space black */
-  --primary: #3FE0D0;          /* Teal accent */
-  --secondary: #9F6CFF;        /* Purple accent */
-  --gold: #FFD66B;             /* Golden highlight */
-  --panel-dark: #1A1C2E;       /* Dark panel bg */
-  --panel-darker: #141625;     /* Darker panel bg */
-}
-
-/* Base Styling */
+/* 3. Global Reset */
+html,
 body {
-  @apply bg-[var(--background)] text-white min-h-screen;
+  @apply h-full overflow-x-hidden;
   font-family: 'Rajdhani', sans-serif;
-  -webkit-tap-highlight-color: transparent;
+  background: #0C0D12; /* Deep space black */
+  color: white;
 }
 
-/* Scrollbar Styling */
+/* 4. Scrollbar Styling (Modern) */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-[var(--panel-darker)];
+  background: rgba(26, 28, 46, 0.5); /* Panel color */
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-[var(--primary)] rounded-full;
+  background: #3FE0D0; /* Primary teal */
+  border-radius: 4px;
 }
 
-/* Custom Utility Classes */
-@layer utilities {
-  .rune-glow {
-    text-shadow: 0 0 8px rgba(63, 224, 208, 0.7);
-  }
-  
-  .gold-glow {
-    text-shadow: 0 0 8px rgba(255, 214, 107, 0.7);
-  }
-  
-  .coin-shadow {
-    box-shadow: 0 0 20px rgba(63, 224, 208, 0.5),
-               0 0 40px rgba(63, 224, 208, 0.3);
-  }
-  
-  .panel-gradient {
-    background: linear-gradient(180deg, 
-                var(--panel-dark) 0%, 
-                var(--panel-darker) 100%);
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: #2ECFB9; /* Lighter teal */
 }
 
-/* Animation Keyframes */
+/* 5. Custom Animations */
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.8; }
   50% { opacity: 1; }
 }
 
-@keyframes rune-float {
+@keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-6px); }
 }
 
-/* Disable number input arrows */
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+/* 6. Utility Classes */
+.glass-panel {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(26, 28, 46, 0.85);
+  border: 1px solid rgba(63, 224, 208, 0.15);
+}
+
+.coin-shadow {
+  box-shadow: 
+    0 0 25px rgba(63, 224, 208, 0.3),
+    inset 0 0 15px rgba(63, 224, 208, 0.2);
+}
+
+/* 7. Input/Button Resets */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+button, input {
+  @apply focus:outline-none focus:ring-2 focus:ring-[#3FE0D0]/50;
+}
+
+/* 8. Color Variables */
+:root {
+  --bg: #0C0D12;
+  --primary: #3FE0D0;
+  --secondary: #9F6CFF;
+  --gold: #FFD66B;
+  --panel: #1A1C2E;
+  --panel-dark: #141625;
 }
