@@ -4,55 +4,121 @@ import { useState } from 'react';
 export default function RuneFlip() {
   const [activeTab, setActiveTab] = useState('create');
 
-  // Inlined components to match PDF exactly
+  // Inlined styles to match PDF exactly
+  const styles = {
+    background: '#0C0D12', // Deep space black from PDF
+    primary: '#3FE0D0', // Teal accent
+    secondary: '#9F6CFF', // Purple accent
+    gold: '#FFD66B', // Gold highlight
+    panelDark: '#1A1C2E', // Dark panel
+    panelDarker: '#141625', // Darker panel
+  };
+
   const UpperPanel = () => (
-    <div className="h-full bg-[#0C0D12] flex flex-col items-center pt-10">
-      {/* Rune Coin Container */}
-      <div className="relative w-72 h-72 mb-8">
-        <div className="absolute inset-0 rounded-full border-4 border-[#3FE0D0] 
-          flex items-center justify-center bg-[#1A1C2E] coin-shadow">
-          {/* Rune Symbols (Heads/Tails) */}
-          <span className="text-6xl font-rune text-[#FFD66B]">
+    <div style={{
+      height: '60vh',
+      backgroundColor: styles.background,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      paddingTop: '40px'
+    }}>
+      {/* Rune Coin */}
+      <div style={{
+        width: '280px',
+        height: '280px',
+        marginBottom: '32px',
+        position: 'relative'
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '50%',
+          border: '4px solid ' + styles.primary,
+          backgroundColor: styles.panelDark,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: `0 0 20px ${styles.primary}80`
+        }}>
+          <span style={{
+            fontSize: '72px',
+            color: styles.gold,
+            fontFamily: '"Rajdhani", sans-serif'
+          }}>
             {activeTab === 'heads' ? 'ᚠ' : 'ᚢ'}
           </span>
         </div>
       </div>
 
       {/* Game Mode Selector */}
-      <div className="flex mb-6 bg-[#1E1F2B] rounded-lg p-1">
-        <button 
-          className={`px-4 py-2 rounded-md ${activeTab === 'create' ? 'bg-[#3FE0D0] text-black' : 'text-[#9F6CFF]'}`}
-          onClick={() => setActiveTab('create')}
-        >
-          Create Game
-        </button>
-        <button 
-          className={`px-4 py-2 rounded-md ${activeTab === 'join' ? 'bg-[#3FE0D0] text-black' : 'text-[#9F6CFF]'}`}
-          onClick={() => setActiveTab('join')}
-        >
-          Join Game
-        </button>
-        <button 
-          className={`px-4 py-2 rounded-md ${activeTab === 'multi' ? 'bg-[#3FE0D0] text-black' : 'text-[#9F6CFF]'}`}
-          onClick={() => setActiveTab('multi')}
-        >
-          Multi-Game
-        </button>
+      <div style={{
+        display: 'flex',
+        marginBottom: '24px',
+        backgroundColor: styles.panelDarker,
+        borderRadius: '8px',
+        padding: '4px'
+      }}>
+        {['create', 'join', 'multi'].map((tab) => (
+          <button
+            key={tab}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '6px',
+              backgroundColor: activeTab === tab ? styles.primary : 'transparent',
+              color: activeTab === tab ? '#000' : styles.secondary,
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: 600,
+              textTransform: 'capitalize'
+            }}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab === 'multi' ? 'Multi-Game' : tab + ' Game'}
+          </button>
+        ))}
       </div>
 
       {/* Stake Input */}
-      <div className="flex items-center mb-8">
-        <div className="relative">
-          <input 
-            type="number" 
-            placeholder="0.001" 
-            className="bg-[#2D2F42] text-white p-3 rounded-l-lg w-40 pr-10"
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '32px' }}>
+        <div style={{ position: 'relative' }}>
+          <input
+            type="number"
+            placeholder="0.001"
+            style={{
+              backgroundColor: styles.panelDarker,
+              color: '#FFF',
+              padding: '12px',
+              borderTopLeftRadius: '8px',
+              borderBottomLeftRadius: '8px',
+              width: '160px',
+              paddingRight: '40px',
+              border: 'none',
+              outline: 'none'
+            }}
             min="0.001"
             step="0.001"
           />
-          <span className="absolute right-3 top-3 text-[#9F6CFF]">SOL</span>
+          <span style={{
+            position: 'absolute',
+            right: '12px',
+            top: '12px',
+            color: styles.secondary
+          }}>
+            SOL
+          </span>
         </div>
-        <button className="bg-[#FFD66B] text-black px-6 py-3 rounded-r-lg font-bold ml-1">
+        <button style={{
+          backgroundColor: styles.gold,
+          color: '#000',
+          padding: '12px 24px',
+          borderTopRightRadius: '8px',
+          borderBottomRightRadius: '8px',
+          border: 'none',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          marginLeft: '1px'
+        }}>
           {activeTab === 'join' ? 'Join' : 'Flip'}
         </button>
       </div>
@@ -60,22 +126,54 @@ export default function RuneFlip() {
   );
 
   const LowerPanel = () => (
-    <div className="h-full flex divide-x divide-[#3FE0D0]/20">
-      {/* Left Panel - Game History */}
-      <div className="w-1/2 bg-[#141625] p-4 overflow-y-auto">
-        <h3 className="text-[#FFD66B] text-lg mb-4 font-semibold">Your Matches</h3>
-        <div className="space-y-3">
+    <div style={{
+      height: '40vh',
+      display: 'flex',
+      backgroundColor: styles.background
+    }}>
+      {/* Left Panel - History */}
+      <div style={{
+        width: '50%',
+        backgroundColor: styles.panelDarker,
+        padding: '16px',
+        overflowY: 'auto',
+        borderTop: `1px solid ${styles.primary}20`
+      }}>
+        <h3 style={{
+          color: styles.gold,
+          fontSize: '18px',
+          marginBottom: '16px',
+          fontWeight: 600
+        }}>
+          Your Matches
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {Array(5).fill().map((_, i) => (
-            <div key={i} className="flex justify-between items-center p-3 bg-[#1E1F2B] rounded-lg border-l-4 border-[#3FE0D0]">
+            <div key={i} style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '12px',
+              backgroundColor: styles.panelDark,
+              borderRadius: '8px',
+              borderLeft: `4px solid ${styles.primary}`
+            }}>
               <div>
-                <p className="text-sm text-[#9F6CFF]">#{i+1} • 2 min ago</p>
-                <p className="text-white">vs. 7y14...W9j3</p>
+                <p style={{ color: styles.secondary, fontSize: '14px' }}>
+                  #{i+1} • 2 min ago
+                </p>
+                <p style={{ color: '#FFF' }}>vs. 7y14...W9j3</p>
               </div>
-              <div className="text-right">
-                <p className={`font-bold ${i % 2 ? 'text-[#3FE0D0]' : 'text-[#FF5555]'}`}>
+              <div style={{ textAlign: 'right' }}>
+                <p style={{ 
+                  fontWeight: 'bold',
+                  color: i % 2 ? styles.primary : '#FF5555'
+                }}>
                   {i % 2 ? '+0.25 SOL' : '-0.25 SOL'}
                 </p>
-                <p className="text-xs text-[#9F6CFF]">Fee: 0.0025 SOL</p>
+                <p style={{ color: styles.secondary, fontSize: '12px' }}>
+                  Fee: 0.0025 SOL
+                </p>
               </div>
             </div>
           ))}
@@ -83,24 +181,77 @@ export default function RuneFlip() {
       </div>
 
       {/* Right Panel - Open Games */}
-      <div className="w-1/2 bg-[#141625] p-4 overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-[#FFD66B] text-lg font-semibold">Open Games</h3>
-          <button className="text-[#3FE0D0] text-sm">Auto-Join</button>
+      <div style={{
+        width: '50%',
+        backgroundColor: styles.panelDarker,
+        padding: '16px',
+        overflowY: 'auto',
+        borderTop: `1px solid ${styles.primary}20`,
+        borderLeft: `1px solid ${styles.primary}20`
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '16px'
+        }}>
+          <h3 style={{
+            color: styles.gold,
+            fontSize: '18px',
+            fontWeight: 600
+          }}>
+            Open Games
+          </h3>
+          <button style={{
+            color: styles.primary,
+            fontSize: '14px',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer'
+          }}>
+            Auto-Join
+          </button>
         </div>
-        <div className="space-y-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {Array(3).fill().map((_, i) => (
-            <div key={i} className="p-3 bg-[#1E1F2B] rounded-lg">
-              <div className="flex justify-between mb-2">
-                <span className="text-[#9F6CFF]">#{i+1}</span>
-                <span className="text-[#FFD66B]">{0.25 + (i*0.25)} SOL</span>
+            <div key={i} style={{
+              padding: '12px',
+              backgroundColor: styles.panelDark,
+              borderRadius: '8px'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginBottom: '8px'
+              }}>
+                <span style={{ color: styles.secondary }}>#{i+1}</span>
+                <span style={{ color: styles.gold }}>{0.25 + (i*0.25)} SOL</span>
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-[#3FE0D0] mr-2"></div>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    backgroundColor: styles.primary,
+                    marginRight: '8px'
+                  }}></div>
                   <span>Waiting...</span>
                 </div>
-                <button className="bg-[#3FE0D0] hover:bg-[#2FC7B7] text-black px-4 py-1 rounded text-sm font-bold">
+                <button style={{
+                  backgroundColor: styles.primary,
+                  color: '#000',
+                  padding: '4px 16px',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}>
                   Join
                 </button>
               </div>
@@ -112,16 +263,16 @@ export default function RuneFlip() {
   );
 
   return (
-    <div className="flex flex-col h-screen">
-      {/* Upper Half (60vh) */}
-      <div className="flex-1" style={{ height: '60vh' }}>
-        <UpperPanel />
-      </div>
-      
-      {/* Lower Half (40vh) */}
-      <div className="flex-1" style={{ height: '40vh' }}>
-        <LowerPanel />
-      </div>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh',
+      backgroundColor: styles.background,
+      color: 'white',
+      fontFamily: '"Rajdhani", sans-serif'
+    }}>
+      <UpperPanel />
+      <LowerPanel />
     </div>
   );
 }
