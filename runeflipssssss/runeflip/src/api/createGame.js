@@ -1,1 +1,0 @@
-// Supabase Edge Function for creating a game

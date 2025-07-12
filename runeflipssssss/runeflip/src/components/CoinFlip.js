@@ -1,1 +1,0 @@
-// Sacred Rune Animation component

@@ -1,1 +1,0 @@
-// Solana Adapter component
