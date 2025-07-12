@@ -1,3 +1,4 @@
 module.exports = {
-  output: 'standalone', // Critical for Vercel
+  output: 'export', // Fixes 404 on Vercel
+  images: { unoptimized: true } // Disables image optimization errors
 };
